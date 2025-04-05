@@ -1,880 +1,977 @@
-
-<br>
-<br>
-<script type="text/javascript">
-	atOptions = {
-		'key' : 'e36d6149f5e1f3341adb32f8a0fbf1fa',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/e36d6149f5e1f3341adb32f8a0fbf1fa/invoke.js"></script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free online tool to compress your images by reducing file size. Reduce JPG, PNG, WebP file sizes effectively.">
-    <meta name="keywords" content="image compressor, reduce image size, online image optimizer, jpg compressor, png compressor">
-    <meta name="author" content="ImageCompressor">
-    <title>Image Compressor - Reduce Image File Size</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tic Tac Toe Champions</title>
     <style>
         :root {
-            --primary-color: #4a6fa5;
-            --secondary-color: #166088;
-            --accent-color: #4fc3f7;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --error-color: #dc3545;
+            --x-color: #ff4757;
+            --o-color: #2ed573;
+            --win-color: #d4edda;
+            --bg-color: #f5f5f5;
+            --cell-bg: #ffffff;
+            --border-color: #333333;
+            --text-color: #333333;
         }
-
+        
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            touch-action: manipulation;
         }
-
+        
         body {
-            background-color: #f5f7fa;
-            color: var(--dark-color);
-            line-height: 1.6;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 10px;
+            background-color: var(--bg-color);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
+            text-align: center;
+            max-width: 100%;
+            width: 100%;
             background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        h1 {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        .logo {
-            font-size: 24px;
+        .status {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            min-height: 2rem;
             font-weight: bold;
-            color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
         }
 
-        .logo i {
-            margin-right: 10px;
-            color: var(--accent-color);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 20px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: var(--primary-color);
-        }
-
-        .main-content {
-            padding: 40px 0;
-        }
-
-        .tool-container {
-            background-color: white;
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            margin: 0 auto 20px;
+            max-width: 300px;
+            aspect-ratio: 1/1;
+            background-color: var(--border-color);
+            padding: 8px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            padding: 30px;
-            margin-bottom: 30px;
         }
 
-        .tool-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .tool-header h1 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-
-        .tool-header p {
-            color: #6c757d;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .upload-area {
-            border: 2px dashed #ced4da;
-            border-radius: 8px;
-            padding: 40px;
-            text-align: center;
+        .cell {
+            background-color: var(--cell-bg);
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
         }
 
-        .upload-area:hover {
-            border-color: var(--accent-color);
-            background-color: rgba(79, 195, 247, 0.05);
+        .cell img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            position: absolute;
+            transition: transform 0.3s, opacity 0.3s;
         }
 
-        .upload-area.active {
-            border-color: var(--success-color);
-            background-color: rgba(40, 167, 69, 0.05);
+        .cell img.x-img {
+            transform: scale(0);
+            opacity: 0;
         }
 
-        .upload-area i {
-            font-size: 48px;
-            color: var(--accent-color);
-            margin-bottom: 15px;
+        .cell img.o-img {
+            transform: scale(0);
+            opacity: 0;
         }
 
-        .upload-area h3 {
-            margin-bottom: 10px;
-            color: var(--dark-color);
+        .cell.x img.x-img {
+            transform: scale(1);
+            opacity: 1;
         }
 
-        .upload-area p {
-            color: #6c757d;
-            margin-bottom: 15px;
+        .cell.o img.o-img {
+            transform: scale(1);
+            opacity: 1;
         }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .cell.winning-cell {
+            animation: pulse 0.5s 3;
+            background-color: var(--win-color);
         }
 
-        .btn:hover {
-            background-color: var(--secondary-color);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            80% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .btn-outline:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-accent {
-            background-color: var(--accent-color);
-        }
-
-        .btn-accent:hover {
-            background-color: #3da8d8;
-        }
-
-        .compression-options {
-            margin: 30px 0;
-        }
-
-        .option-group {
-            margin-bottom: 20px;
-        }
-
-        .option-group h3 {
-            margin-bottom: 15px;
-            color: var(--dark-color);
-        }
-
-        .slider-container {
-            margin-bottom: 15px;
-        }
-
-        .slider-container label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .slider-wrapper {
+        .game-controls {
             display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .slider {
-            flex-grow: 1;
-            -webkit-appearance: none;
-            height: 8px;
-            border-radius: 4px;
-            background: #dee2e6;
-            outline: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            cursor: pointer;
-        }
-
-        .slider-value {
-            min-width: 40px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .checkbox-group input {
-            margin-right: 10px;
-        }
-
-        .preview-section {
-            display: none;
-            margin-top: 30px;
-        }
-
-        .preview-section h2 {
-            margin-bottom: 20px;
-            color: var(--dark-color);
-            text-align: center;
-        }
-
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
             justify-content: center;
-        }
-
-        .image-preview {
-            flex: 1;
-            min-width: 300px;
-            max-width: 450px;
-        }
-
-        .image-preview h3 {
-            margin-bottom: 15px;
-            color: var(--dark-color);
-            text-align: center;
-        }
-
-        .image-preview img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .image-info {
+            gap: 10px;
             margin-top: 15px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .image-info p {
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .image-info span:first-child {
-            font-weight: 500;
-            color: var(--dark-color);
-        }
-
-        .image-info span:last-child {
-            color: #495057;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 8px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 40px 0 20px;
-        }
-
-        .footer-content {
-            display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
-            margin-bottom: 30px;
         }
 
-        .footer-column {
-            flex: 1;
-            min-width: 200px;
-            margin-bottom: 20px;
-            padding: 0 15px;
-        }
-
-        .footer-column h3 {
+        .control-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
             color: white;
-            margin-bottom: 20px;
-            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            min-width: 120px;
         }
 
-        .footer-column ul {
-            list-style: none;
+        .restart-btn {
+            background: linear-gradient(135deg, var(--x-color), var(--o-color));
         }
 
-        .footer-column ul li {
-            margin-bottom: 10px;
+        .pause-btn {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
         }
 
-        .footer-column ul li a {
-            color: #adb5bd;
-            text-decoration: none;
-            transition: color 0.3s;
+        .exit-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
         }
 
-        .footer-column ul li a:hover {
-            color: white;
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
-        .footer-bottom {
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .player-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .player.current {
+            background-color: rgba(0,0,0,0.05);
+            transform: scale(1.05);
+        }
+
+        .player-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+
+        .player.current .player-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+        }
+
+        .player-name {
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #495057;
-            color: #adb5bd;
-            font-size: 14px;
+            max-width: 80%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            animation: zoomIn 0.3s forwards;
+            position: relative;
         }
 
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-            }
+        .modal h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
 
-            nav ul {
-                margin-top: 15px;
-            }
+        .modal p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
 
-            nav ul li {
-                margin-left: 15px;
-                margin-right: 15px;
-            }
+        .modal-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--x-color), var(--o-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 5px;
+        }
 
-            .upload-area {
-                padding: 30px 15px;
-            }
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
 
-            .preview-container {
+        /* Game Mode Selection */
+        .mode-selection {
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: white;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--x-color), var(--o-color));
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Pause Modal */
+        .pause-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 80%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .pause-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); }
+            to { transform: scale(1); }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 99;
+            animation: confettiFall 5s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .status {
+                font-size: 1.2rem;
+            }
+            
+            .player-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .modal h2 {
+                font-size: 1.5rem;
+            }
+            
+            .modal p {
+                font-size: 1rem;
+            }
+            
+            .game-controls {
                 flex-direction: column;
                 align-items: center;
             }
-
-            .image-preview {
+            
+            .control-btn {
                 width: 100%;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                width: 100%;
-                margin-bottom: 10px;
+                max-width: 200px;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <a href="#" class="logo">
-                <i class="fas fa-compress-alt"></i>
-                ImageCompressor
-            </a>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">How It Works</a></li>
-                    <li><a href="#">Features</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </nav>
+    <!-- Game Mode Selection Modal -->
+    <div class="modal" id="modeModal" style="display: flex;">
+        <div class="modal-content">
+            <h2>Select Game Mode</h2>
+            <div class="mode-selection">
+                <button class="mode-btn active" id="pvpBtn">Player vs Player</button>
+                <button class="mode-btn" id="pvcBtn">Player vs Computer</button>
+            </div>
+            <button class="modal-btn" id="startGameBtn">Start Game</button>
         </div>
-    </header>
+    </div>
 
-    <div class="container">
-        <div class="main-content">
-            <div class="tool-container">
-                <div class="tool-header">
-                    <h1>Compress Your Images</h1>
-                    <p>Reduce image file size effectively. Supports JPG, PNG, and WebP formats.</p>
-                </div>
-
-                <div class="upload-area" id="uploadArea">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <h3>Drag & Drop Your Images Here</h3>
-                    <p>or click to browse files</p>
-                    <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
-                    <button class="btn btn-accent" id="selectFilesBtn">Select Files</button>
-                </div>
-
-                <div class="compression-options" id="compressionOptions" style="display: none;">
-                    <div class="option-group">
-                        <h3>Compression Settings</h3>
-                        <div class="slider-container">
-                            <label for="qualitySlider">Compression Level</label>
-                            <div class="slider-wrapper">
-                                <input type="range" min="1" max="100" value="70" class="slider" id="qualitySlider">
-                                <span class="slider-value" id="qualityValue">70%</span>
-                            </div>
-                            <small style="color: #6c757d;">Lower values = smaller files but lower quality</small>
-                        </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="preserveFilename">
-                            <label for="preserveFilename">Preserve original filename</label>
-                        </div>
-                    </div>
-
-                    <div class="option-group">
-                        <h3>Output Format</h3>
-                        <div class="checkbox-group">
-                            <input type="radio" id="formatOriginal" name="outputFormat" value="original" checked>
-                            <label for="formatOriginal">Original format</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="formatJpg" name="outputFormat" value="jpg">
-                            <label for="formatJpg">JPEG (best for photos)</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="formatPng" name="outputFormat" value="png">
-                            <label for="formatPng">PNG (best for graphics)</label>
-                        </div>
-                        <div class="checkbox-group">
-                            <input type="radio" id="formatWebp" name="outputFormat" value="webp">
-                            <label for="formatWebp">WebP (modern format)</label>
-                        </div>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button class="btn" id="compressBtn">
-                            <span id="compressBtnText">Compress Images</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="preview-section" id="previewSection">
-                    <h2>Compression Results</h2>
-                    <div class="preview-container" id="previewContainer">
-                        <!-- Preview items will be added here dynamically -->
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn" id="downloadAllBtn">
-                            <i class="fas fa-download"></i> Download All
-                        </button>
-                        <button class="btn btn-outline" id="compressMoreBtn">
-                            <i class="fas fa-redo"></i> Compress More
-                        </button>
-                    </div>
-                </div>
+    <!-- Pause Modal -->
+    <div class="modal" id="pauseModal">
+        <div class="pause-modal-content">
+            <h2>Game Paused</h2>
+            <p>What would you like to do?</p>
+            <div class="pause-options">
+                <button class="modal-btn" id="resumeBtn">Resume Game</button>
+                <button class="modal-btn" id="newGameBtn">New Game</button>
+                <button class="modal-btn" id="exitToHomeBtn">Exit to Menu</button>
             </div>
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>ImageCompressor</h3>
-                    <p style="color: #adb5bd;">Effective online tool to reduce your image file sizes.</p>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">How It Works</a></li>
-                        <li><a href="#">Features</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Support</h3>
-                    <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
+    <!-- Winner Modal -->
+    <div class="modal" id="winnerModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Victory!</h2>
+            <p id="modalMessage">Player X has won the game!</p>
+            <button class="modal-btn" id="modalBtn">Play Again</button>
+            <button class="modal-btn" id="changeModeBtn">Change Mode</button>
+        </div>
+    </div>
+
+    <!-- Draw Modal -->
+    <div class="modal" id="drawModal">
+        <div class="modal-content">
+            <h2>It's a Draw!</h2>
+            <p>No winner this time. Try again!</p>
+            <button class="modal-btn" id="drawModalBtn">Play Again</button>
+            <button class="modal-btn" id="drawChangeModeBtn">Change Mode</button>
+        </div>
+    </div>
+
+    <div class="container" id="gameContainer">
+        <h1>Tic Tac Toe Champions</h1>
+        
+        <div class="player-info">
+            <div class="player current" id="playerX">
+                <img src="https://iili.io/3ugsYiu.webp" alt="X" class="player-icon">
+                <div class="player-name">Player X</div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 ImageCompressor. All rights reserved.</p>
+            <div class="player" id="playerO">
+                <img src="https://iili.io/3ugs7Ve.webp" alt="O" class="player-icon">
+                <div class="player-name">Player O</div>
             </div>
         </div>
-    </footer>
-
+        
+        <div class="status" id="status">Player X's turn</div>
+        <div class="board" id="board">
+            <!-- Rows will be generated by JavaScript -->
+        </div>
+        <div class="game-controls">
+            <button class="control-btn restart-btn" id="restartBtn">Restart</button>
+            <button class="control-btn pause-btn" id="pauseBtn">Pause</button>
+            <button class="control-btn exit-btn" id="exitBtn">Exit</button>
+        </div>
+    </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const uploadArea = document.getElementById('uploadArea');
-            const fileInput = document.getElementById('fileInput');
-            const selectFilesBtn = document.getElementById('selectFilesBtn');
-            const compressionOptions = document.getElementById('compressionOptions');
-            const previewSection = document.getElementById('previewSection');
-            const previewContainer = document.getElementById('previewContainer');
-            const qualitySlider = document.getElementById('qualitySlider');
-            const qualityValue = document.getElementById('qualityValue');
-            const compressBtn = document.getElementById('compressBtn');
-            const compressBtnText = document.getElementById('compressBtnText');
-            const downloadAllBtn = document.getElementById('downloadAllBtn');
-            const compressMoreBtn = document.getElementById('compressMoreBtn');
-            const preserveFilename = document.getElementById('preserveFilename');
-            const formatOriginal = document.getElementById('formatOriginal');
-            const formatJpg = document.getElementById('formatJpg');
-            const formatPng = document.getElementById('formatPng');
-            const formatWebp = document.getElementById('formatWebp');
-
-            // Variables
-            let filesToCompress = [];
-            let compressedFiles = [];
-
-            // Event Listeners
-            selectFilesBtn.addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', handleFileSelect);
-            uploadArea.addEventListener('dragover', handleDragOver);
-            uploadArea.addEventListener('dragleave', handleDragLeave);
-            uploadArea.addEventListener('drop', handleDrop);
-            qualitySlider.addEventListener('input', updateQualityValue);
-            compressBtn.addEventListener('click', compressImages);
-            downloadAllBtn.addEventListener('click', downloadAllCompressed);
-            compressMoreBtn.addEventListener('click', resetTool);
-
-            // Functions
-            function handleFileSelect(e) {
-                const files = e.target.files;
-                if (files.length > 0) {
-                    processFiles(files);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Game elements
+            const board = document.getElementById('board');
+            const status = document.getElementById('status');
+            const restartBtn = document.getElementById('restartBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const exitBtn = document.getElementById('exitBtn');
+            const playerX = document.getElementById('playerX');
+            const playerO = document.getElementById('playerO');
+            const winnerModal = document.getElementById('winnerModal');
+            const drawModal = document.getElementById('drawModal');
+            const pauseModal = document.getElementById('pauseModal');
+            const modalBtn = document.getElementById('modalBtn');
+            const drawModalBtn = document.getElementById('drawModalBtn');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modeModal = document.getElementById('modeModal');
+            const pvpBtn = document.getElementById('pvpBtn');
+            const pvcBtn = document.getElementById('pvcBtn');
+            const startGameBtn = document.getElementById('startGameBtn');
+            const changeModeBtn = document.getElementById('changeModeBtn');
+            const drawChangeModeBtn = document.getElementById('drawChangeModeBtn');
+            const resumeBtn = document.getElementById('resumeBtn');
+            const newGameBtn = document.getElementById('newGameBtn');
+            const exitToHomeBtn = document.getElementById('exitToHomeBtn');
+            const gameContainer = document.getElementById('gameContainer');
+            
+            // Game state
+            let currentPlayer = 'X';
+            let gameActive = true;
+            let gameState = ['', '', '', '', '', '', '', '', ''];
+            let gameMode = 'pvp'; // 'pvp' or 'pvc'
+            let computerDifficulty = 'hard'; // 'easy', 'medium', 'hard'
+            let isPaused = false;
+            let savedGameState = null;
+            
+            // Create board cells dynamically
+            function initializeBoard() {
+                board.innerHTML = '';
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.cell = i;
+                    
+                    const xImg = document.createElement('img');
+                    xImg.src = "https://iili.io/3ugsYiu.webp";
+                    xImg.alt = "X";
+                    xImg.className = "x-img";
+                    
+                    const oImg = document.createElement('img');
+                    oImg.src = "https://iili.io/3ugs7Ve.webp";
+                    oImg.alt = "O";
+                    oImg.className = "o-img";
+                    
+                    cell.appendChild(xImg);
+                    cell.appendChild(oImg);
+                    board.appendChild(cell);
                 }
             }
-
-            function handleDragOver(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadArea.classList.add('active');
-            }
-
-            function handleDragLeave(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadArea.classList.remove('active');
-            }
-
-            function handleDrop(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadArea.classList.remove('active');
+            
+            initializeBoard();
+            let cells = document.querySelectorAll('[data-cell]');
+            
+            const winningConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6]             // diagonals
+            ];
+            
+            // Sound effects
+            const sounds = {
+                win: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3'),
+                draw: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-neutral-game-notification-933.mp3'),
+                click: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3'),
+                pause: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3')
+            };
+            
+            // Initialize game
+            initGame();
+            
+            function initGame() {
+                // Set up mode selection
+                pvpBtn.addEventListener('click', () => {
+                    gameMode = 'pvp';
+                    pvpBtn.classList.add('active');
+                    pvcBtn.classList.remove('active');
+                });
                 
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    processFiles(files);
+                pvcBtn.addEventListener('click', () => {
+                    gameMode = 'pvc';
+                    pvcBtn.classList.add('active');
+                    pvpBtn.classList.remove('active');
+                });
+                
+                startGameBtn.addEventListener('click', startGame);
+                changeModeBtn.addEventListener('click', showModeSelection);
+                drawChangeModeBtn.addEventListener('click', showModeSelection);
+                
+                // Set up game board events
+                setupBoardEvents();
+                
+                // Button event listeners
+                restartBtn.addEventListener('click', restartGame);
+                pauseBtn.addEventListener('click', pauseGame);
+                exitBtn.addEventListener('click', exitToMenu);
+                modalBtn.addEventListener('click', restartGame);
+                drawModalBtn.addEventListener('click', restartGame);
+                resumeBtn.addEventListener('click', resumeGame);
+                newGameBtn.addEventListener('click', newGame);
+                exitToHomeBtn.addEventListener('click', exitToMenu);
+            }
+            
+            function setupBoardEvents() {
+                cells.forEach(cell => {
+                    cell.removeEventListener('click', handleCellClick);
+                    cell.removeEventListener('touchstart', handleCellClick);
+                    cell.addEventListener('click', handleCellClick);
+                    cell.addEventListener('touchstart', handleCellClick, { passive: false });
+                });
+            }
+            
+            function startGame() {
+                modeModal.style.display = 'none';
+                gameContainer.style.display = 'block';
+                currentPlayer = 'X';
+                gameActive = true;
+                isPaused = false;
+                gameState = ['', '', '', '', '', '', '', '', ''];
+                status.textContent = `Player ${currentPlayer}'s turn`;
+                
+                cells.forEach(cell => {
+                    cell.classList.remove('x', 'o', 'winning-cell');
+                    cell.querySelector('.x-img').style.animation = '';
+                    cell.querySelector('.o-img').style.animation = '';
+                });
+                
+                playerX.classList.add('current');
+                playerO.classList.remove('current');
+                
+                // If playing against computer and computer goes first
+                if (gameMode === 'pvc' && currentPlayer === 'O') {
+                    setTimeout(computerMove, 500);
                 }
             }
-
-            function processFiles(files) {
-                filesToCompress = Array.from(files).filter(file => file.type.startsWith('image/'));
+            
+            function pauseGame() {
+                if (!gameActive) return;
                 
-                if (filesToCompress.length > 0) {
-                    compressionOptions.style.display = 'block';
-                    compressionOptions.scrollIntoView({ behavior: 'smooth' });
+                isPaused = !isPaused;
+                
+                if (isPaused) {
+                    // Save current game state
+                    savedGameState = {
+                        gameState: [...gameState],
+                        currentPlayer: currentPlayer,
+                        playerXCurrent: playerX.classList.contains('current'),
+                        playerOCurrent: playerO.classList.contains('current')
+                    };
+                    
+                    // Show pause modal
+                    pauseModal.style.display = 'flex';
+                    playSound('pause');
                 } else {
-                    alert('Please select image files only.');
+                    // Resume game
+                    pauseModal.style.display = 'none';
                 }
             }
-
-            function updateQualityValue() {
-                qualityValue.textContent = `${qualitySlider.value}%`;
+            
+            function resumeGame() {
+                if (savedGameState) {
+                    // Restore game state
+                    gameState = [...savedGameState.gameState];
+                    currentPlayer = savedGameState.currentPlayer;
+                    
+                    // Update board UI
+                    cells.forEach((cell, index) => {
+                        cell.classList.remove('x', 'o', 'winning-cell');
+                        if (gameState[index] === 'X') {
+                            cell.classList.add('x');
+                            cell.querySelector('.x-img').style.animation = 'none';
+                            setTimeout(() => {
+                                cell.querySelector('.x-img').style.animation = '';
+                            }, 10);
+                        } else if (gameState[index] === 'O') {
+                            cell.classList.add('o');
+                            cell.querySelector('.o-img').style.animation = 'none';
+                            setTimeout(() => {
+                                cell.querySelector('.o-img').style.animation = '';
+                            }, 10);
+                        }
+                    });
+                    
+                    // Update player turn display
+                    status.textContent = gameMode === 'pvp' 
+                        ? `Player ${currentPlayer}'s turn` 
+                        : currentPlayer === 'X' 
+                            ? 'Your turn (X)' 
+                            : 'Computer thinking...';
+                    
+                    playerX.classList.toggle('current', savedGameState.playerXCurrent);
+                    playerO.classList.toggle('current', savedGameState.playerOCurrent);
+                    
+                    gameActive = true;
+                    isPaused = false;
+                    pauseModal.style.display = 'none';
+                    
+                    // If it's computer's turn in PvC mode, let it move
+                    if (gameMode === 'pvc' && currentPlayer === 'O') {
+                        setTimeout(computerMove, 500);
+                    }
+                }
             }
-
-            function showLoading(button, text) {
-                button.disabled = true;
-                button.innerHTML = `<span class="loading"></span>${text}`;
+            
+            function newGame() {
+                pauseModal.style.display = 'none';
+                startGame();
             }
-
-            function hideLoading(button, text) {
-                button.disabled = false;
-                button.textContent = text;
+            
+            function exitToMenu() {
+                // Hide game container and show mode selection
+                gameContainer.style.display = 'none';
+                pauseModal.style.display = 'none';
+                winnerModal.style.display = 'none';
+                drawModal.style.display = 'none';
+                modeModal.style.display = 'flex';
+                
+                // Reset game state
+                gameActive = false;
+                isPaused = false;
+                savedGameState = null;
             }
-
-            async function compressImages() {
-                if (filesToCompress.length === 0) {
-                    alert('Please select images to compress first.');
+            
+            function showModeSelection() {
+                gameContainer.style.display = 'none';
+                winnerModal.style.display = 'none';
+                drawModal.style.display = 'none';
+                modeModal.style.display = 'flex';
+            }
+            
+            function handleCellClick(e) {
+                e.preventDefault();
+                if (!gameActive || isPaused || (gameMode === 'pvc' && currentPlayer === 'O')) return;
+                
+                const clickedCell = e.target.closest('.cell');
+                if (!clickedCell) return;
+                
+                const clickedCellIndex = parseInt(clickedCell.dataset.cell);
+                
+                if (gameState[clickedCellIndex] !== '') {
                     return;
                 }
-
-                showLoading(compressBtn, 'Compressing...');
-                compressedFiles = [];
                 
-                try {
-                    for (let i = 0; i < filesToCompress.length; i++) {
-                        const file = filesToCompress[i];
-                        const compressedFile = await compressImage(file);
-                        compressedFiles.push(compressedFile);
-                    }
-                    
-                    showPreviews(compressedFiles);
-                } catch (error) {
-                    console.error('Compression error:', error);
-                    alert('An error occurred during compression. Please try again.');
-                } finally {
-                    hideLoading(compressBtn, 'Compress Images');
+                // Play click sound
+                playSound('click');
+                
+                // Visual feedback
+                clickedCell.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    clickedCell.style.transform = 'scale(1)';
+                }, 100);
+                
+                makeMove(clickedCell, clickedCellIndex);
+                
+                // If playing against computer, let computer make move after player
+                if (gameMode === 'pvc' && gameActive && currentPlayer === 'O' && !isPaused) {
+                    setTimeout(computerMove, 500);
                 }
             }
-
-            async function compressImage(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(event) {
-                        const img = new Image();
-                        img.onload = function() {
-                            // Determine output format
-                            let outputFormat = 'jpeg';
-                            if (formatJpg.checked) outputFormat = 'jpeg';
-                            else if (formatPng.checked) outputFormat = 'png';
-                            else if (formatWebp.checked) outputFormat = 'webp';
-                            else outputFormat = file.type.split('/')[1] || 'jpeg';
-                            
-                            // Create canvas
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-                            canvas.width = img.width;
-                            canvas.height = img.height;
-                            
-                            // Draw image on canvas
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                            
-                            // Convert quality (1-100 to 0-1 for WebP/JPEG, or adjust for PNG)
-                            let quality = qualitySlider.value / 100;
-                            
-                            // For PNG, we need a different approach since it's lossless
-                            if (outputFormat === 'png') {
-                                // Reduce color palette for PNG to achieve compression
-                                quality = Math.max(0.1, quality * 0.5); // More aggressive reduction
-                            }
-                            
-                            // Convert to blob with specified format and quality
-                            canvas.toBlob((blob) => {
-                                if (!blob) {
-                                    reject(new Error('Compression failed'));
-                                    return;
-                                }
-                                
-                                // Create new file with compressed data
-                                const fileName = preserveFilename.checked ? 
-                                    file.name.replace(/\.[^/.]+$/, '') : 
-                                    'compressed_' + file.name.replace(/\.[^/.]+$/, '');
-                                
-                                const fileExt = outputFormat === 'jpeg' ? 'jpg' : outputFormat;
-                                
-                                const compressedFile = new File([blob], `${fileName}.${fileExt}`, {
-                                    type: `image/${outputFormat}`,
-                                    lastModified: Date.now()
-                                });
-                                
-                                resolve({
-                                    original: file,
-                                    compressed: compressedFile,
-                                    originalSize: file.size,
-                                    compressedSize: blob.size,
-                                    reduction: Math.round(100 - (blob.size / file.size * 100)),
-                                    url: URL.createObjectURL(blob)
-                                });
-                            }, `image/${outputFormat}`, outputFormat === 'png' ? undefined : quality);
-                        };
-                        
-                        img.onerror = function() {
-                            reject(new Error('Image loading error'));
-                        };
-                        
-                        img.src = event.target.result;
-                    };
-                    
-                    reader.onerror = function() {
-                        reject(new Error('File reading error'));
-                    };
-                    
-                    reader.readAsDataURL(file);
-                });
-            }
-
-            function showPreviews(files) {
-                previewContainer.innerHTML = '';
+            
+            function computerMove() {
+                if (!gameActive || isPaused || currentPlayer !== 'O') return;
                 
-                files.forEach((fileData, index) => {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'image-preview';
-                    
-                    const originalUrl = URL.createObjectURL(fileData.original);
-                    const compressedUrl = fileData.url;
-                    
-                    previewItem.innerHTML = `
-                        <h3>${fileData.compressed.name}</h3>
-                        <img src="${compressedUrl}" alt="Compressed Preview">
-                        <div class="image-info">
-                            <p>
-                                <span>Original Size:</span>
-                                <span>${formatFileSize(fileData.originalSize)}</span>
-                            </p>
-                            <p>
-                                <span>Compressed Size:</span>
-                                <span>${formatFileSize(fileData.compressedSize)}</span>
-                            </p>
-                            <p>
-                                <span>Reduction:</span>
-                                <span>${fileData.reduction}%</span>
-                            </p>
-                            <button class="btn btn-outline download-btn" data-index="${index}" style="width: 100%; margin-top: 10px;">
-                                <i class="fas fa-download"></i> Download
-                            </button>
-                        </div>
-                    `;
-                    
-                    previewContainer.appendChild(previewItem);
-                    
-                    const downloadBtn = previewItem.querySelector('.download-btn');
-                    downloadBtn.addEventListener('click', () => downloadImage(index));
-                });
+                let move;
                 
-                previewSection.style.display = 'block';
-                previewSection.scrollIntoView({ behavior: 'smooth' });
-            }
-
-            function formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-
-            function downloadImage(index) {
-                const fileData = compressedFiles[index];
-                const a = document.createElement('a');
-                a.href = fileData.url;
-                a.download = fileData.compressed.name;
-                document.body.appendChild(a);
-                a.click();
+                switch(computerDifficulty) {
+                    case 'easy':
+                        move = getRandomMove();
+                        break;
+                    case 'medium':
+                        move = Math.random() > 0.5 ? getWinningMove() : getRandomMove();
+                        break;
+                    case 'hard':
+                    default:
+                        move = getBestMove();
+                        break;
+                }
                 
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                }, 100);
-            }
-
-            function downloadAllCompressed() {
-                compressedFiles.forEach((fileData, index) => {
+                if (move !== -1) {
+                    const cell = cells[move];
+                    cell.style.transform = 'scale(0.9)';
                     setTimeout(() => {
-                        downloadImage(index);
-                    }, index * 300);
-                });
+                        cell.style.transform = 'scale(1)';
+                    }, 100);
+                    
+                    makeMove(cell, move);
+                }
             }
-
-            function resetTool() {
-                compressedFiles.forEach(fileData => {
-                    URL.revokeObjectURL(fileData.url);
+            
+            function getRandomMove() {
+                const availableMoves = [];
+                gameState.forEach((cell, index) => {
+                    if (cell === '') availableMoves.push(index);
                 });
                 
-                filesToCompress = [];
-                compressedFiles = [];
-                fileInput.value = '';
-                compressionOptions.style.display = 'none';
-                previewSection.style.display = 'none';
-                qualitySlider.value = 70;
-                qualityValue.textContent = '70%';
-                formatOriginal.checked = true;
-                preserveFilename.checked = false;
+                if (availableMoves.length > 0) {
+                    return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                }
+                return -1;
+            }
+            
+            function getWinningMove() {
+                // Check if computer can win
+                for (let i = 0; i < winningConditions.length; i++) {
+                    const [a, b, c] = winningConditions[i];
+                    if (gameState[a] === 'O' && gameState[b] === 'O' && gameState[c] === '') return c;
+                    if (gameState[a] === 'O' && gameState[c] === 'O' && gameState[b] === '') return b;
+                    if (gameState[b] === 'O' && gameState[c] === 'O' && gameState[a] === '') return a;
+                }
                 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Check if player can win and block
+                for (let i = 0; i < winningConditions.length; i++) {
+                    const [a, b, c] = winningConditions[i];
+                    if (gameState[a] === 'X' && gameState[b] === 'X' && gameState[c] === '') return c;
+                    if (gameState[a] === 'X' && gameState[c] === 'X' && gameState[b] === '') return b;
+                    if (gameState[b] === 'X' && gameState[c] === 'X' && gameState[a] === '') return a;
+                }
+                
+                return getRandomMove();
+            }
+            
+            function getBestMove() {
+                // Simple implementation of minimax algorithm
+                
+                // First check if computer can win
+                for (let i = 0; i < winningConditions.length; i++) {
+                    const [a, b, c] = winningConditions[i];
+                    if (gameState[a] === 'O' && gameState[b] === 'O' && gameState[c] === '') return c;
+                    if (gameState[a] === 'O' && gameState[c] === 'O' && gameState[b] === '') return b;
+                    if (gameState[b] === 'O' && gameState[c] === 'O' && gameState[a] === '') return a;
+                }
+                
+                // Check if player can win and block
+                for (let i = 0; i < winningConditions.length; i++) {
+                    const [a, b, c] = winningConditions[i];
+                    if (gameState[a] === 'X' && gameState[b] === 'X' && gameState[c] === '') return c;
+                    if (gameState[a] === 'X' && gameState[c] === 'X' && gameState[b] === '') return b;
+                    if (gameState[b] === 'X' && gameState[c] === 'X' && gameState[a] === '') return a;
+                }
+                
+                // Take center if available
+                if (gameState[4] === '') return 4;
+                
+                // Take a corner if available
+                const corners = [0, 2, 6, 8];
+                const availableCorners = corners.filter(corner => gameState[corner] === '');
+                if (availableCorners.length > 0) {
+                    return availableCorners[Math.floor(Math.random() * availableCorners.length)];
+                }
+                
+                // Take any available edge
+                const edges = [1, 3, 5, 7];
+                const availableEdges = edges.filter(edge => gameState[edge] === '');
+                if (availableEdges.length > 0) {
+                    return availableEdges[Math.floor(Math.random() * availableEdges.length)];
+                }
+                
+                return -1;
+            }
+            
+            function makeMove(cell, cellIndex) {
+                gameState[cellIndex] = currentPlayer;
+                cell.classList.add(currentPlayer.toLowerCase());
+                
+                // Animate the symbol appearance
+                const symbolImg = currentPlayer === 'X' 
+                    ? cell.querySelector('.x-img') 
+                    : cell.querySelector('.o-img');
+                symbolImg.style.animation = 'bounceIn 0.3s forwards';
+                
+                checkResult();
+            }
+            
+            function checkResult() {
+                let roundWon = false;
+                let winningCombo = [];
+                
+                for (let i = 0; i < winningConditions.length; i++) {
+                    const [a, b, c] = winningConditions[i];
+                    
+                    if (gameState[a] === '' || gameState[b] === '' || gameState[c] === '') {
+                        continue;
+                    }
+                    
+                    if (gameState[a] === gameState[b] && gameState[b] === gameState[c]) {
+                        roundWon = true;
+                        winningCombo = winningConditions[i];
+                        break;
+                    }
+                }
+                
+                if (roundWon) {
+                    gameActive = false;
+                    winningCombo.forEach(index => {
+                        cells[index].classList.add('winning-cell');
+                    });
+                    
+                    // Show winner modal
+                    showWinnerModal(currentPlayer);
+                    createConfetti();
+                    playSound('win');
+                    return;
+                }
+                
+                if (!gameState.includes('')) {
+                    gameActive = false;
+                    // Show draw modal
+                    drawModal.style.display = 'flex';
+                    playSound('draw');
+                    return;
+                }
+                
+                switchPlayer();
+            }
+            
+            function showWinnerModal(winner) {
+                modalTitle.textContent = getRandomVictoryTitle();
+                modalMessage.textContent = gameMode === 'pvp' 
+                    ? `Player ${winner} has won the game!` 
+                    : winner === 'X' 
+                        ? 'You won against the computer!' 
+                        : 'The computer won! Try again!';
+                winnerModal.style.display = 'flex';
+            }
+            
+            function getRandomVictoryTitle() {
+                const titles = [
+                    "Victory!",
+                    "Champion!",
+                    "You Win!",
+                    "Amazing!",
+                    "Brilliant!",
+                    "Excellent!",
+                    "Fantastic!",
+                    "Well Played!"
+                ];
+                return titles[Math.floor(Math.random() * titles.length)];
+            }
+            
+            function createConfetti() {
+                const colors = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#7d3cff'];
+                
+                for (let i = 0; i < 100; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + 'vw';
+                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                        document.body.appendChild(confetti);
+                        
+                        // Remove confetti after animation
+                        setTimeout(() => {
+                            confetti.remove();
+                        }, 5000);
+                    }, i * 30);
+                }
+            }
+            
+            function playSound(type) {
+                if (sounds[type]) {
+                    sounds[type].currentTime = 0;
+                    sounds[type].play().catch(e => console.log("Audio play prevented:", e));
+                }
+            }
+            
+            function switchPlayer() {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                status.textContent = gameMode === 'pvp' 
+                    ? `Player ${currentPlayer}'s turn` 
+                    : currentPlayer === 'X' 
+                        ? 'Your turn (X)' 
+                        : 'Computer thinking...';
+                playerX.classList.toggle('current', currentPlayer === 'X');
+                playerO.classList.toggle('current', currentPlayer === 'O');
+            }
+            
+            function restartGame() {
+                initializeBoard();
+                cells = document.querySelectorAll('[data-cell]');
+                setupBoardEvents();
+                
+                currentPlayer = 'X';
+                gameActive = true;
+                isPaused = false;
+                gameState = ['', '', '', '', '', '', '', '', ''];
+                status.textContent = gameMode === 'pvp' 
+                    ? `Player ${currentPlayer}'s turn` 
+                    : 'Your turn (X)';
+                
+                cells.forEach(cell => {
+                    cell.classList.remove('x', 'o', 'winning-cell');
+                    cell.querySelector('.x-img').style.animation = '';
+                    cell.querySelector('.o-img').style.animation = '';
+                });
+                
+                playerX.classList.add('current');
+                playerO.classList.remove('current');
+                
+                // Hide modals
+                winnerModal.style.display = 'none';
+                drawModal.style.display = 'none';
+                pauseModal.style.display = 'none';
+                
+                // Remove any remaining confetti
+                document.querySelectorAll('.confetti').forEach(el => el.remove());
+                
+                // If playing against computer and computer goes first
+                if (gameMode === 'pvc' && currentPlayer === 'O') {
+                    setTimeout(computerMove, 500);
+                }
             }
         });
     </script>
 </body>
 </html>
-
-<br>
-<br>
-<script type="text/javascript">
-	atOptions = {
-		'key' : 'dde266700e766f77de65b447f0cda779',
-		'format' : 'iframe',
-		'height' : 600,
-		'width' : 160,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/dde266700e766f77de65b447f0cda779/invoke.js"></script>
-
-<script type='text/javascript' src='//pl26291829.effectiveratecpm.com/9a/d1/fb/9ad1fb4abcdac2f37d6f3693122d9477.js'></script>
-
-
